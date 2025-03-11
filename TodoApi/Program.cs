@@ -6,15 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ToDoDbContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("ToDoDb"), 
-        new MySqlServerVersion(new Version(8, 0, 41)),
-        mysqlOptions =>
-        {
-            // הוספת אפשרות לנסות להתחבר מחדש במקרה של בעיה זמנית
-            mysqlOptions.EnableRetryOnFailure(); 
-        }
-    ));
+options.UseMySql(builder.Configuration.GetConnectionString("ToDoDb"), 
+    new MySqlServerVersion(new Version(8, 0, 41)))); 
 
+builder.Logging.AddConsole();
 
 builder.Services.AddCors(option => option.AddPolicy("AllowAll",//נתינת שם להרשאה
     p => p.AllowAnyOrigin()//מאפשר כל מקור
