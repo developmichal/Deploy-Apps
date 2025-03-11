@@ -22,13 +22,13 @@ builder.Services.AddSwaggerGen(c =>
 });
 var app = builder.Build();
 app.UseCors("AllowAll");
-if (app.Environment.IsDevelopment())
-{
+// if (app.Environment.IsDevelopment())
+// {
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+// }
 
-app.MapGet("/", () => "Hello World!");
+app.MapGet("/", () => "ToDoApi is running!");
 
 app.MapGet("/selectAll", async (ToDoDbContext db) =>{
     return await db.Items.ToListAsync();
