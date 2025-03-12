@@ -13,7 +13,7 @@ builder.WebHost.ConfigureKestrel(options =>
 
 builder.Services.AddDbContext<ToDoDbContext>(options =>
 options.UseMySql(builder.Configuration.GetConnectionString("ToDoDb"), 
-    new MySqlServerVersion(new Version(8, 0, 41))))
+    new MySqlServerVersion(new Version(8, 0, 41))));
 
 // builder.Services.AddDbContext<ToDoDbContext>(options =>
 //     options.UseMySql(builder.Configuration.GetConnectionString("ToDoDb"), 
