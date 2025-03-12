@@ -5,9 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// builder.Services.AddDbContext<ToDoDbContext>(options =>
+// options.UseMySql(builder.Configuration.GetConnectionString("ToDoDb"), 
+//     new MySqlServerVersion(new Version(8, 0, 41)))); 
 builder.Services.AddDbContext<ToDoDbContext>(options =>
-options.UseMySql(builder.Configuration.GetConnectionString("ToDoDb"), 
-    new MySqlServerVersion(new Version(8, 0, 41)))); 
+    options.UseMySql(builder.Configuration.GetConnectionString("ToDoDb"), 
+    new MySqlServerVersion(new Version(8, 0, 41)),
+    mySqlOptions => mySqlOptions.EnableRetryOnFailure()));
 
 builder.Logging.AddConsole();
 
