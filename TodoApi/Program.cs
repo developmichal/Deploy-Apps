@@ -5,21 +5,20 @@ using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Set the port dynamically (Render will provide the correct port)
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";  // Default to 8080 if not set
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";  
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.ListenAnyIP(int.Parse(port));  // Listen on the port provided by Render
 });
 
-// builder.Services.AddDbContext<ToDoDbContext>(options =>
-// options.UseMySql(builder.Configuration.GetConnectionString("ToDoDb"), 
-//     new MySqlServerVersion(new Version(8, 0, 41))))
-
 builder.Services.AddDbContext<ToDoDbContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("ToDoDb"), 
-    new MySqlServerVersion(new Version(8, 0, 41)),
-    mySqlOptions => mySqlOptions.EnableRetryOnFailure()));
+options.UseMySql(builder.Configuration.GetConnectionString("ToDoDb"), 
+    new MySqlServerVersion(new Version(8, 0, 41))))
+
+// builder.Services.AddDbContext<ToDoDbContext>(options =>
+//     options.UseMySql(builder.Configuration.GetConnectionString("ToDoDb"), 
+//     new MySqlServerVersion(new Version(8, 0, 41)),
+//     mySqlOptions => mySqlOptions.EnableRetryOnFailure()));
 
 builder.Logging.AddConsole();
 builder.Services.AddCors(option => option.AddPolicy("AllowAll",//נתינת שם להרשאה
