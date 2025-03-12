@@ -11,14 +11,14 @@ builder.WebHost.ConfigureKestrel(options =>
     options.ListenAnyIP(int.Parse(port));  // Listen on the port provided by Render
 });
 
-builder.Services.AddDbContext<ToDoDbContext>(options =>
-options.UseMySql(builder.Configuration.GetConnectionString("ToDoDb"), 
-    new MySqlServerVersion(new Version(8, 0, 41))));
-
 // builder.Services.AddDbContext<ToDoDbContext>(options =>
-//     options.UseMySql(builder.Configuration.GetConnectionString("ToDoDb"), 
-//     new MySqlServerVersion(new Version(8, 0, 41)),
-//     mySqlOptions => mySqlOptions.EnableRetryOnFailure()));
+// options.UseMySql(builder.Configuration.GetConnectionString("ToDoDb"), 
+//     new MySqlServerVersion(new Version(8, 0, 41))));
+
+builder.Services.AddDbContext<ToDoDbContext>(options =>
+    options.UseMySql(builder.Configuration.GetConnectionString("ToDoDb"), 
+    new MySqlServerVersion(new Version(8, 0, 41)),
+    mySqlOptions => mySqlOptions.EnableRetryOnFailure()));
 
 builder.Logging.AddConsole();
 builder.Services.AddCors(option => option.AddPolicy("AllowAll",//נתינת שם להרשאה
