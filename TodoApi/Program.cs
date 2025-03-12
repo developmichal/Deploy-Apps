@@ -5,15 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";  
-builder.WebHost.ConfigureKestrel(options =>
-{
-    options.ListenAnyIP(int.Parse(port));  // Listen on the port provided by Render
-});
+// var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";  
+// builder.WebHost.ConfigureKestrel(options =>
+// {
+//     options.ListenAnyIP(int.Parse(port)); 
+// });
 
-// builder.Services.AddDbContext<ToDoDbContext>(options =>
-// options.UseMySql(builder.Configuration.GetConnectionString("ToDoDb"), 
-//     new MySqlServerVersion(new Version(8, 0, 41))));
 
 builder.Services.AddDbContext<ToDoDbContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("ToDoDb"), 
@@ -25,6 +22,7 @@ builder.Services.AddCors(option => option.AddPolicy("AllowAll",//נתינת שם
     p => p.AllowAnyOrigin()//מאפשר כל מקור
     .AllowAnyMethod()//כל מתודה - פונקציה
     .AllowAnyHeader()));//וכל כותרת פונקציה
+
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
