@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";  
-// builder.WebHost.ConfigureKestrel(options =>
-// {
-//     options.ListenAnyIP(int.Parse(port)); 
-// });
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";  
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(int.Parse(port)); 
+});
 
 
 builder.Services.AddDbContext<ToDoDbContext>(options =>
