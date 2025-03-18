@@ -20,9 +20,17 @@ public partial class ToDoDbContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseMySql("server=basfhys3m2dbtfwlonrg-mysql.services.clever-cloud.com;port=3306;user=uxcaabjhnz7pqer1;password=AAAu83MZLtSpNKjdPlW2;database=basfhys3m2dbtfwlonrg;", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.41-mysql"));
+//     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+// #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+//         => optionsBuilder.UseMySql("server=basfhys3m2dbtfwlonrg-mysql.services.clever-cloud.com;port=3306;user=uxcaabjhnz7pqer1;password=AAAu83MZLtSpNKjdPlW2;database=basfhys3m2dbtfwlonrg;", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.41-mysql"));
+protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+{
+    if (!optionsBuilder.IsConfigured)
+    {
+        var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings_ToDoDB");
+        optionsBuilder.UseMySql(connectionString, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.41-mysql"));
+    }
+}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

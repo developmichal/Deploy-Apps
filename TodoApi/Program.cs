@@ -11,9 +11,8 @@ builder.WebHost.ConfigureKestrel(options =>
     options.ListenAnyIP(int.Parse(port)); 
 });
 
-
 builder.Services.AddDbContext<ToDoDbContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("ToDoDb"), 
+    options.UseMySql(builder.Configuration.GetConnectionString("ToDoDB"), 
     new MySqlServerVersion(new Version(8, 0, 41)),
     mySqlOptions => mySqlOptions.EnableRetryOnFailure()));
 
