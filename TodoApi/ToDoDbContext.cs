@@ -28,6 +28,8 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     if (!optionsBuilder.IsConfigured)
     {
         var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings_ToDoDB");
+        Console.WriteLine($"Connection String: {connectionString}");
+
         optionsBuilder.UseMySql(connectionString, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.41-mysql"));
     }
 }
