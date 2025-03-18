@@ -5,6 +5,7 @@
 
 # dotenv files
 .env
+appsettings.json
 ToDoListReact-master/node_modules
 # User-specific files
 *.rsuser
@@ -12,7 +13,7 @@ ToDoListReact-master/node_modules
 *.user
 *.userosscache
 *.sln.docstates
-
+*.json
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
