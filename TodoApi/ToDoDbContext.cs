@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
+using Microsoft.Extensions.Configuration;
 
 namespace TodoApi;
 
@@ -20,22 +21,20 @@ public partial class ToDoDbContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-//     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-// #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-//         => optionsBuilder.UseMySql("server=basfhys3m2dbtfwlonrg-mysql.services.clever-cloud.com;port=3306;user=uxcaabjhnz7pqer1;password=AAAu83MZLtSpNKjdPlW2;database=basfhys3m2dbtfwlonrg;", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.41-mysql"));
-protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-{
-    if (!optionsBuilder.IsConfigured)
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings_ToDoDB");
-        if (string.IsNullOrEmpty(connectionString))
+        if (!optionsBuilder.IsConfigured)
         {
-            throw new Exception("Connection string 'ToDoDB' is not configured.");
-        }
-        optionsBuilder.UseMySql(connectionString, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.41-mysql"));
-    }
-}
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddEnvironmentVariables()
+                .Build();
 
+            var connectionString = configuration.GetConnectionString("ToDoDB");
+            optionsBuilder.UseMySql(connectionString, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.41-mysql"));
+        }
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
