@@ -31,7 +31,7 @@ public partial class ToDoDbContext : DbContext
                 .AddEnvironmentVariables()
                 .Build();
 
-            var connectionString = configuration.GetConnectionString("ToDoDB");
+            var connectionString = configuration.GetConnectionString("ConnectionStrings_ToDoDB");
             optionsBuilder.UseMySql(connectionString, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.41-mysql"));
         }
     }
