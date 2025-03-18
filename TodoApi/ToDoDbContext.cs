@@ -27,10 +27,15 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 {
     if (!optionsBuilder.IsConfigured)
     {
-        var connectionString = "ConnectionStrings:ToDoDB"; // אם אתה משתמש בקובץ קונפיגורציה
+        var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings_ToDoDB");
+        if (string.IsNullOrEmpty(connectionString))
+        {
+            throw new Exception("Connection string 'ToDoDB' is not configured.");
+        }
         optionsBuilder.UseMySql(connectionString, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.41-mysql"));
     }
 }
+
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
