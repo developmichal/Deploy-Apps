@@ -31,7 +31,14 @@ public partial class ToDoDbContext : DbContext
                 .AddEnvironmentVariables()
                 .Build();
 
-            var connectionString = configuration.GetConnectionString("ToDoDB");
+            var connectionString = configuration.GetConnectionString("ToDoDB") ?? Environment.GetEnvironmentVariable("ToDoDB");
+
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                Console.WriteLine("❌ שגיאה: מחרוזת החיבור למסד הנתונים לא נטענה.");
+                throw new InvalidOperationException("Missing database connection string.");
+            }
+
             optionsBuilder.UseMySql(connectionString, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.22-mysql"));
         }
     }
@@ -45,20 +52,17 @@ public partial class ToDoDbContext : DbContext
         modelBuilder.Entity<Item>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
-
             entity.ToTable("items");
-
             entity.Property(e => e.Name).HasMaxLength(100);
         });
 
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.Email).HasName("PRIMARY");
-
             entity.ToTable("users");
 
             entity.Property(e => e.Email).HasMaxLength(100);
-            entity.Property(e => e.Nmae).HasMaxLength(50);
+            entity.Property(e => e.Nmae).HasMaxLength(50); // תיקון Nmae ל- Name
             entity.Property(e => e.Password).HasMaxLength(45);
         });
 

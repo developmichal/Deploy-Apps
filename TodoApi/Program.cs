@@ -11,20 +11,30 @@ builder.WebHost.ConfigureKestrel(options =>
     options.ListenAnyIP(int.Parse(port));
 });
 
+// טעינת מחרוזת החיבור
+var connectionString = builder.Configuration.GetConnectionString("ToDoDB") ?? Environment.GetEnvironmentVariable("ToDoDB");
+
+if (string.IsNullOrEmpty(connectionString))
+{
+    Console.WriteLine("❌ מחרוזת החיבור לא נמצאה! בדוק משתני סביבה או appsettings.json");
+}
+else
+{
+    Console.WriteLine($"✅ מחרוזת חיבור נטענה: {connectionString}");
+}
+
 // הוספת ה-DbContext עם חיבור ל-MySQL
 builder.Services.AddDbContext<ToDoDbContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("ToDoDB"),
+    options.UseMySql(connectionString,
     new MySqlServerVersion(new Version(8, 0, 22)),
     mySqlOptions => mySqlOptions.EnableRetryOnFailure()));
 
-// הוספת ה-CORS לפני קריאת builder.Build()
-builder.Services.AddCors(option => option.AddPolicy("AllowAll", //נתינת שם להרשאה
-    p => p.AllowAnyOrigin() //מאפשר כל מקור
-    .AllowAnyMethod() //כל מתודה - פונקציה
-    .AllowAnyHeader())); //וכל כותרת פונקציה
+builder.Services.AddCors(option => option.AddPolicy("AllowAll",
+    p => p.AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader()));
 
 builder.Logging.AddConsole();
-builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
