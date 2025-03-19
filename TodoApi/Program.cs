@@ -11,17 +11,19 @@ builder.WebHost.ConfigureKestrel(options =>
     options.ListenAnyIP(int.Parse(port)); 
 });
 
+// הוספת ה-DbContext עם חיבור ל-MySQL
 builder.Services.AddDbContext<ToDoDbContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("ToDoDB"), 
     new MySqlServerVersion(new Version(8, 0, 41)),
     mySqlOptions => mySqlOptions.EnableRetryOnFailure()));
 
-builder.Logging.AddConsole();
-builder.Services.AddCors(option => option.AddPolicy("AllowAll",//נתינת שם להרשאה
-    p => p.AllowAnyOrigin()//מאפשר כל מקור
-    .AllowAnyMethod()//כל מתודה - פונקציה
-    .AllowAnyHeader()));//וכל כותרת פונקציה
+// הוספת ה-CORS לפני קריאת builder.Build()
+builder.Services.AddCors(option => option.AddPolicy("AllowAll", //נתינת שם להרשאה
+    p => p.AllowAnyOrigin() //מאפשר כל מקור
+    .AllowAnyMethod() //כל מתודה - פונקציה
+    .AllowAnyHeader())); //וכל כותרת פונקציה
 
+builder.Logging.AddConsole();
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -30,6 +32,21 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
+
+// בדיקת חיבור למסד הנתונים
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ToDoDbContext>();
+    try
+    {
+        dbContext.Database.OpenConnection();
+        Console.WriteLine("✅ הצלחנו להתחבר למסד הנתונים!");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"❌ חיבור למסד הנתונים נכשל: {ex.Message}");
+    }
+}
 
 app.UseCors("AllowAll");
 app.UseSwagger();
