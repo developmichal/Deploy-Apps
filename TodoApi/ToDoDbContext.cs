@@ -32,7 +32,7 @@ public partial class ToDoDbContext : DbContext
                 .Build();
 
             var connectionString = configuration.GetConnectionString("ToDoDB");
-            optionsBuilder.UseMySql(connectionString, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.41-mysql"));
+            optionsBuilder.UseMySql(connectionString, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.22-mysql"));
         }
     }
 
