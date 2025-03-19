@@ -5,16 +5,16 @@ using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";  
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.ListenAnyIP(int.Parse(port)); 
+    options.ListenAnyIP(int.Parse(port));
 });
 
 // הוספת ה-DbContext עם חיבור ל-MySQL
 builder.Services.AddDbContext<ToDoDbContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("ToDoDB"), 
-    new MySqlServerVersion(new Version(8, 0, 41)),
+    options.UseMySql(builder.Configuration.GetConnectionString("ToDoDB"),
+    new MySqlServerVersion(new Version(8, 0, 22)),
     mySqlOptions => mySqlOptions.EnableRetryOnFailure()));
 
 // הוספת ה-CORS לפני קריאת builder.Build()
