@@ -19,14 +19,14 @@ This is a simple Task Manager application with a React frontend and a .NET 6 Min
 - Docker  
 - Render  
 - Clever Cloud 
----
+
 ## Project Description
 
 A simple task management app that allows users to:
 - Add, update, and delete tasks  
 - Mark tasks as completed or not completed  
 - View all tasks in real-time  
----
+
 ## Backend Structure
 
 - Minimal API using .NET 6  
