@@ -2,7 +2,6 @@
 
 This is a simple Task Manager application with a React frontend and a .NET 6 Minimal API backend, using MySQL as the database. The project was deployed to the cloud using Render and Caliber Cloud, and Docker was used for containerizing the backend.
 
----
 ## Technologies Used
 
 ### Frontend
